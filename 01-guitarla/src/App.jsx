@@ -9,10 +9,12 @@ function App() {
   const [guitars, setGuitars] = useState([]);
   const [cart, setCart] = useState([]);
 
+  // Fetch guitars
   useEffect(() => {
     setGuitars(db);
   }, [guitars]);
 
+  // Load cart from localStorage
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
 
@@ -21,6 +23,11 @@ function App() {
     }
   }, []);
 
+  // Save cart to localStorage on cart change
+  useEffect(() => {
+    saveCartToLocalStorage();
+  }, [cart]);
+
   function addToCart(guitar) {
     // Check if the guitar already exists in the cart
     const index = cart.findIndex((item) => item.id === guitar.id);
@@ -28,8 +35,6 @@ function App() {
     // If it doesn't exist, add it with quantity 1
     if (index === -1) {
       setCart([...cart, { ...guitar, quantity: 1 }]);
-
-      saveCartToLocalStorage();
       return;
     }
 
@@ -37,7 +42,6 @@ function App() {
     const updatedCart = [...cart];
     updatedCart[index].quantity += 1;
     setCart(updatedCart);
-    saveCartToLocalStorage();
   }
 
   function clearCart() {
@@ -49,7 +53,6 @@ function App() {
     const updatedCart = cart.filter(item => item.id !== id);
 
     setCart(updatedCart);
-    saveCartToLocalStorage();
   }
 
   function updateQuantity(id, quantity) {
@@ -66,7 +69,6 @@ function App() {
       ));
 
     setCart(updatedCart);
-    saveCartToLocalStorage();
   }
 
   function saveCartToLocalStorage() {
