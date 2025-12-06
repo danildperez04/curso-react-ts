@@ -13,6 +13,14 @@ function App() {
     setGuitars(db);
   }, [guitars]);
 
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cart');
+
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
   function addToCart(guitar) {
     // Check if the guitar already exists in the cart
     const index = cart.findIndex((item) => item.id === guitar.id);
@@ -21,6 +29,7 @@ function App() {
     if (index === -1) {
       setCart([...cart, { ...guitar, quantity: 1 }]);
 
+      saveCartToLocalStorage();
       return;
     }
 
@@ -28,15 +37,19 @@ function App() {
     const updatedCart = [...cart];
     updatedCart[index].quantity += 1;
     setCart(updatedCart);
+    saveCartToLocalStorage();
   }
 
   function clearCart() {
     setCart([]);
+    removeCartFromLocalStorage();
   }
 
   function removeItem(id) {
     const updatedCart = cart.filter(item => item.id !== id);
+
     setCart(updatedCart);
+    saveCartToLocalStorage();
   }
 
   function updateQuantity(id, quantity) {
@@ -53,6 +66,15 @@ function App() {
       ));
 
     setCart(updatedCart);
+    saveCartToLocalStorage();
+  }
+
+  function saveCartToLocalStorage() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  function removeCartFromLocalStorage() {
+    localStorage.removeItem('cart');
   }
 
   return (
