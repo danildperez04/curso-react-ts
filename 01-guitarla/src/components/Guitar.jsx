@@ -4,7 +4,7 @@ export default function Guitar({ guitar }) {
       <div className="col-4">
         <img
           className="img-fluid"
-          src={`./public/img/${guitar.image}.jpg`}
+          src={`/img/${guitar.image}.jpg`}
           alt="imagen guitarra"
         />
       </div>
