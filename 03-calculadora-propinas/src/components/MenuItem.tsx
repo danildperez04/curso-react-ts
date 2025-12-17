@@ -1,12 +1,16 @@
 import type { MenuItem } from "../types"
 
 type MenuItemProps = {
-  item: MenuItem
+  item: MenuItem,
+  addItem: (item: MenuItem) => void,
+  removeItem: (itemId: number) => void
 }
 
-export function MenuItem({ item }: MenuItemProps) {
+export function MenuItem({ item, addItem }: MenuItemProps) {
   return (
-    <button className="border-2 border-teal-400 w-full p-3 flex justify-between hover:bg-teal-200 rounded">
+    <button
+      className="border-2 border-teal-400 w-full p-3 flex justify-between hover:bg-teal-200 rounded"
+      onClick={() => addItem(item)}>
       <p>{item.name}</p>
       <span className="font-black">${item.price}</span>
     </button>
